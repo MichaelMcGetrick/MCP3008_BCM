@@ -8,7 +8,7 @@
               from theMCP3008 ADC, and display the signal graphically.
  	 	 	   
  ============================================================================
- */
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,13 +31,16 @@
 //FUNCTION DECLARATIONS -------------------------
 //TBD
 //-----------------------------------------------
-
-
-
 int main(void) {
 
-       //Testing:
-       printf("Hello World - from Raspberry Pi!\n");
+       //Initialise SPI for MCP3008:
+       printf("Initialising SPI for MCP3008 peripheral.....\n");
+       printf("BCM2835 Library version:   %d\n",getBCM2835Version());
+       //MCP3008_Init();
+                  
+       
+       //MCP3008_Close();
+              
        return 0;
 
 }//main
