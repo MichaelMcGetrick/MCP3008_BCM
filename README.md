@@ -19,28 +19,26 @@ functionality of the Raspberry Pi Broadcom SoC.
 ### BCM2835 Library Installation
 
 From the home directory (or other directory of your choice) get the latest version
-of the library with: 
+of the library with 
 
 wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.xx.tar.gz
 
 where 1.xx is the latest version.
 
-Unzip the downloaded files with:
+Unzip the downloaded files with
 tar zxvf bcm2835-1.xx.tar.gz 
 
-Go into unzipped folder with:
+Go into unzipped folder with
 cd bcm2835-1.xx
 
-Run the configure executable:
+Run the configure executable
 ./configure
 
-Execute makefile:
+Then build and install
+
 make
-
-Then:
 sudo make check
-
-Then sudo make install
+sudo make install
 
 
 
