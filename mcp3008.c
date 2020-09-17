@@ -34,11 +34,51 @@ int MCP3008_Init()
    bcm2835_spi_setClockDivider(SPI_CLK_DIV); 
    bcm2835_spi_chipSelect(SPI_CS);                      
    bcm2835_spi_setChipSelectPolarity(SPI_CS, LOW);  //Select chip on LOW    
-      
+   
+     
+   //Define MOSI transmit data  
+   tx_buf[0] = 0x01;                      //Least significant bit the start bit 
+   tx_buf[1] = SPI_CTRL_CFG;              //Define inupt mode and input pin address
+   tx_buf[2] = 0x01;                      //Don't care bits
+         
    return 0;
    
       
 }//MCP3008_Init
+
+
+float readSample()
+{      
+   
+   float volts;
+   
+   uint16_t val;
+   
+   bcm2835_spi_transfernb(tx_buf,rx_buf,BUFFER_LEN);
+   
+   rx_buf[1] &= 0x03;    //Define most significant byte
+      
+   val = getVal(rx_buf[1],rx_buf[2]);
+   
+   //Convert to floating point:
+   volts = ((float)val*VREF)/MAX_ANALOG_VAL;
+
+   return volts;
+   
+}//ReadSample   
+
+
+uint16_t getVal(uint8_t msb,uint8_t lsb)
+{
+   
+   uint16_t val_msb = msb;
+   uint16_t val_lsb = lsb;
+	val_msb = val_msb << 8;
+   
+   return  val_msb | val_lsb;
+   
+}//getVal
+
 
 
 void transfer_byte(uint8_t val)
