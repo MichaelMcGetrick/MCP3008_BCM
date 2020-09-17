@@ -19,28 +19,25 @@ functionality of the Raspberry Pi Broadcom SoC.
 ### BCM2835 Library Installation
 
 From the home directory (or other directory of your choice) get the latest version
-of the library with: 
+of the library with 
 
 wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.xx.tar.gz
 
 where 1.xx is the latest version.
 
-Unzip the downloaded files with:
+<b>Unzip the downloaded files with:</b>\
 tar zxvf bcm2835-1.xx.tar.gz 
 
-Go into unzipped folder with:
+<b>Go into unzipped folder with:</b>\
 cd bcm2835-1.xx
 
-Run the configure executable:
+<b>Run the configure executable:</b>\
 ./configure
 
-Execute makefile:
-make
-
-Then:
-sudo make check
-
-Then sudo make install
+<b>Then build and install:</b>\
+make\
+sudo make check\
+sudo make install
 
 
 
@@ -48,8 +45,8 @@ Then sudo make install
 		
 ### Graphics		   
 The signal can then be displayed by using appropriate graphics
-code. The project will use the graphic_lx library to be found at:
-https://github.com/UtterSense/Simple-Graphics/
+code. The project will use the graphic_lx library to be found at:\
+https://github.com/UtterSense/Simple-Graphics
      
        
        
