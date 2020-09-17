@@ -25,7 +25,7 @@ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.xx.tar.gz
 
 where 1.xx is the latest version.
 
-####Unzip the downloaded files with:\
+<b>Unzip the downloaded files with:</b>\
 tar zxvf bcm2835-1.xx.tar.gz 
 
 ####Go into unzipped folder with:\
