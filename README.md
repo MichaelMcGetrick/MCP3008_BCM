@@ -25,19 +25,19 @@ wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.xx.tar.gz
 
 where 1.xx is the latest version.
 
-Unzip the downloaded files with:\
+####Unzip the downloaded files with:\
 tar zxvf bcm2835-1.xx.tar.gz 
 
-Go into unzipped folder with:\
+####Go into unzipped folder with:\
 cd bcm2835-1.xx
 
-Run the configure executable:\
+####Run the configure executable:\
 ./configure
 
-Then build and install:\
+####Then build and install:\
 make\
 sudo make check\
-sudo make install\
+sudo make install
 
 
 
@@ -45,8 +45,8 @@ sudo make install\
 		
 ### Graphics		   
 The signal can then be displayed by using appropriate graphics
-code. The project will use the graphic_lx library to be found at:
-https://github.com/UtterSense/Simple-Graphics/
+code. The project will use the graphic_lx library to be found at:\
+https://github.com/UtterSense/Simple-Graphics
      
        
        
