@@ -8,6 +8,7 @@
               from theMCP3008 ADC, and display the signal graphically.
                
               NB: This program must be run as root to access GPIO and SPI functionality 
+                  (Use sudo ./bcm_spi) 
  	 	 	   
  =====================================================================================
 */
@@ -16,6 +17,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <signal.h>
 
 #include "mcp3008.h"
 
@@ -23,26 +26,66 @@
 //DEFINES ---------------------------------------
 
 
+//ATTRIBUES: -----------------------------------------
+int EXIT_PROGRAM = 0;
 
-//GRAPH PLOTTING: -----------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------------------------
+//GRAPH PLOTTING: -------------------------------------
+
+//----------------------------------------------------
+
 
 
 //FUNCTION DECLARATIONS -------------------------
-//TBD
+void ctrl_c_handler(int sig);
+
+
 //-----------------------------------------------
 int main(void) {
+
+       //Register handler for capturing CTL-C signal:
+	signal(SIGINT,ctrl_c_handler);
+
 
        //Initialise SPI for MCP3008:
        printf("Initialising SPI for MCP3008 peripheral.....\n");
        printf("BCM2835 Library version:   %d\n\n",getBCM2835Version());
-       //MCP3008_Init();
-       //MCP3008_Close();
+       MCP3008_Init();
        
-       //Do loopback test:
-       loopback_test(0xae);
+       uint cnt = 0;
+       while(EXIT_PROGRAM == 0)
+       {             
+           float volts = readSample();
+           printf("Count: %d\n", cnt);
+           printf("Voltage reading: %.2f\n",volts);
+           sleep(1);   //Seconds
+           cnt += 1;
+                            
+       }                    
+       
+       printf("Closing down SPI interface...\n");
+       MCP3008_Close();
+       
+       printf("SPI closed down - exiting program\n");
                      
        return 0;
 
 }//main
+
+
+//NB: This handler is working for the CTL-C keyboard signal
+//	  This will exit the while loop so as to exit the program gracefully
+//	  (We need to close the connection to the serial terminal)
+void ctrl_c_handler(int sig)
+{
+   
+   if(sig == SIGINT) //Check it is the right user ID //NB: Not working at the moment
+   {
+         printf("\nWe have received the CTRL-C signal - aborting sample looping!\n");
+         EXIT_PROGRAM = 1; //This will stop program
+         
+   }
+   
+         
+}//ctrl_c_handler(int sig)
+
