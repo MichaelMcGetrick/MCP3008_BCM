@@ -28,13 +28,13 @@ where 1.xx is the latest version.
 <b>Unzip the downloaded files with:</b>\
 tar zxvf bcm2835-1.xx.tar.gz 
 
-####Go into unzipped folder with:\
+<b>Go into unzipped folder with:</b>\
 cd bcm2835-1.xx
 
-####Run the configure executable:\
+<b>Run the configure executable:</b>\
 ./configure
 
-####Then build and install:\
+<b>Then build and install:</b>\
 make\
 sudo make check\
 sudo make install
