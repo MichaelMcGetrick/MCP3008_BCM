@@ -20,7 +20,7 @@
 #define SPI_BIT_ORDER     BCM2835_SPI_BIT_ORDER_MSBFIRST      //Bit order for MCP3008
 #define SPI_DATA_MODE     BCM2835_SPI_MODE0                   //Default data mode
 #define SPI_CS            BCM2835_SPI_CS0                     //Chip select
-#define SPI_CLK_DIV       BCM2835_SPI_CLOCK_DIVIDER_4096     //Gives clock frequency of 0.68MHz (4096 -> 0.34MHz)
+#define SPI_CLK_DIV       BCM2835_SPI_CLOCK_DIVIDER_65536     //Gives clock frequency of 0.68MHz (4096 -> 0.34MHz)
 
 
 #define RD_MODE 	        1   //Single:1; Differential: 0
@@ -32,20 +32,23 @@
 
 #define BUFFER_LEN        3  //Buffer length for SPI transmit and receive bytes
 
+   
+
 //ATTRIBUTES:
 unsigned int bcm2835_ver;
 char tx_buf[BUFFER_LEN], rx_buf[BUFFER_LEN];
-      
+unsigned int delay_ms;      
                  
 
 //FUNCTION PROTOTYPES ---------------------------------------------------------
         
-int MCP3008_Init();
+int MCP3008_Init(float sample_rate);
 void MCP3008_Close();
 float readSample();
 uint16_t getVal(uint8_t msb,uint8_t lsb);
 void transfer_byte(uint8_t val);
 void loopback_test(uint8_t val);
+unsigned int getSamplingRate(void);
 unsigned int getBCM2835Version(void);
 
        

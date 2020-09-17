@@ -13,7 +13,7 @@
 #include <string.h>
 
 //---------------------------------------------------------------------------
-int MCP3008_Init()
+int MCP3008_Init(float sample_rate)
 {
    
    if (!bcm2835_init())
@@ -41,6 +41,9 @@ int MCP3008_Init()
    tx_buf[1] = SPI_CTRL_CFG;              //Define inupt mode and input pin address
    tx_buf[2] = 0x01;                      //Don't care bits
          
+   //Set required delay for sampling rate:
+   delay_ms = (1.0/(float)sample_rate)*1000;
+                      
    return 0;
    
       
@@ -57,7 +60,6 @@ float readSample()
    bcm2835_spi_transfernb(tx_buf,rx_buf,BUFFER_LEN);
    
    rx_buf[1] &= 0x03;    //Define most significant byte
-      
    val = getVal(rx_buf[1],rx_buf[2]);
    
    //Convert to floating point:
@@ -113,6 +115,13 @@ void MCP3008_Close()
 }//MCP3008_Close()
 
 
+unsigned int getSamplingRate(void)
+{
+   return delay_ms;
+   
+}//getSamplingRate   
+
+
 unsigned int getBCM2835Version(void)
 {
    bcm2835_ver = bcm2835_version();
@@ -125,7 +134,7 @@ unsigned int getBCM2835Version(void)
 //Loopback test to check RPI SPI functionality
 void loopback_test(uint8_t val)
 {
-   MCP3008_Init();
+   MCP3008_Init(2.0);   //Define dummy paramter - not used for sampling
        
    //Transfer one byte for loopback test:
    transfer_byte(val);           
@@ -133,5 +142,6 @@ void loopback_test(uint8_t val)
    MCP3008_Close();
       
 }//loopback_test
+
 
 

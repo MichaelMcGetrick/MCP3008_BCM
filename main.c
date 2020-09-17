@@ -24,10 +24,12 @@
 
 
 //DEFINES ---------------------------------------
+#define SAMPLING_RATE     0.5f  //Set to 1 if sampling at 1Hz or less
+	
 
-
-//ATTRIBUES: -----------------------------------------
+//ATTRIBUTES: -----------------------------------------
 int EXIT_PROGRAM = 0;
+unsigned int sample_delay;
 
 
 //GRAPH PLOTTING: -------------------------------------
@@ -45,22 +47,25 @@ int main(void) {
 
        //Register handler for capturing CTL-C signal:
 	signal(SIGINT,ctrl_c_handler);
-
+            
 
        //Initialise SPI for MCP3008:
        printf("Initialising SPI for MCP3008 peripheral.....\n");
        printf("BCM2835 Library version:   %d\n\n",getBCM2835Version());
-       MCP3008_Init();
-       
+       MCP3008_Init(SAMPLING_RATE);
+         
+                   
+       sample_delay = getSamplingRate();
+       printf("Delay in millisecs: %d\n",sample_delay);
+              
        uint cnt = 0;
        while(EXIT_PROGRAM == 0)
        {             
            float volts = readSample();
            printf("Count: %d\n", cnt);
            printf("Voltage reading: %.2f\n",volts);
-           sleep(1);   //Seconds
-           cnt += 1;
-                            
+           bcm2835_delay(sample_delay);   
+           cnt += 1;              
        }                    
        
        printf("Closing down SPI interface...\n");
