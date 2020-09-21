@@ -2,3 +2,7 @@
 bcm_spi
 #Spreadhseets
 calcs.xls
+free_loop.xls
+sample_delay_1msec.xls
+#csv files
+data.csv
