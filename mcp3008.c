@@ -42,7 +42,8 @@ int MCP3008_Init(float sample_rate)
    tx_buf[2] = 0x01;                      //Don't care bits
          
    //Set required delay for sampling rate:
-   delay_ms = (1.0/(float)sample_rate)*1000;
+   //delay_ms = (1.0/(float)sample_rate)*1000;
+   delay_us = (1.0/(float)sample_rate)*1000000;
                       
    return 0;
    
@@ -115,9 +116,9 @@ void MCP3008_Close()
 }//MCP3008_Close()
 
 
-unsigned int getSamplingRate(void)
+uint64_t getSamplingRate(void)
 {
-   return delay_ms;
+   return delay_us;
    
 }//getSamplingRate   
 
