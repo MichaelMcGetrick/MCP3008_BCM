@@ -1,15 +1,15 @@
 /*
- ============================================================================
+ =======================================================================
  Name        : graph.c
  Author      : Michael McGetrick
  Version     :
  Copyright   : 
- Description : Graph module to set up graph and animamation plotting 
- 	 	 	      for signal from MCP3008
+ Description : Graph module to set up graphing for animated plotting 
+ 	 	 	      
  	 	 	         
 
  	 	 	    
- ============================================================================
+ =======================================================================
  */
 #include <stdio.h>
 #include <stdlib.h>

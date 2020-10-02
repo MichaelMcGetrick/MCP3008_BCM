@@ -24,7 +24,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <unistd.h>
+//#include <unistd.h>
+#include <sys/time.h>
 #include <signal.h>
 
 #include "graph.h"
@@ -33,7 +34,7 @@
 
 
 //DEFINES ---------------------------------------
-#define SAMPLING_RATE     1000.0f  
+#define SAMPLING_RATE     4000.0f//1000.0f  
 	
 
 //ATTRIBUTES: -----------------------------------------
@@ -45,7 +46,7 @@ float data[1000];
 //File attributes
 FILE *fp;
 char *filename = "data.csv";
-bool saveToFile = true;
+bool saveToFile = false;
 
 
 
@@ -70,11 +71,12 @@ int main(void) {
 					 
 	sample_delay = getSamplingRate();
 	printf("Delay in micro-secs: %lld\n",sample_delay);
-			  
-	 
+			 
+	
 	 
 	if(strcmp(PROG_MODE,"TEST") == 0)
 	{
+	   
 		doTest();
 		
 	}
@@ -110,14 +112,21 @@ void doGraphics()
 	}	
 					
 	  
+	//Initialise data buffer:
+	for(int i=0;i<DATA_LEN;i++)
+	{
+		PLOT_BUFFER[i] = 0.0;
+		PLOT_COPY[i] = 0.0;
+	} 
 	  
-	  
-	
+		
 	int count = 0;
 	float volts;
 	while(EXIT_PROGRAM == 0)
 	{
 		
+		//Delay for set time: 					
+		//bcm2835_delayMicroseconds(sample_delay);
 		volts = readSample();
 				
 		//Signal bounds check (to catch erroneous values)
@@ -150,8 +159,8 @@ void doGraphics()
 			}
 		
 			
-			//PLOT_BUFFER[DATA_LEN-1] = (float) volts + DC_OFFSET;
-			PLOT_BUFFER[DATA_LEN-1] = (float) volts;
+			PLOT_BUFFER[DATA_LEN-1] = (float) volts + DC_OFFSET;
+			//PLOT_BUFFER[DATA_LEN-1] = (float) volts;
 									
 			
 			//Plot the signal	
@@ -218,13 +227,15 @@ void doGraphics()
 			 
 		}//count
 		
-		 count = count + 1;	
-		 if(count == DATA_SKIP)
-		 {
+		count = count + 1;	
+		if(count == DATA_SKIP)
+		{
 			//Remove grid for animation:
 			//removeGrid();
 
-		}					
+		}
+		 					
+		 					
 
 	}//while
 	
@@ -247,41 +258,59 @@ void doGraphics()
 void doTest()
 {
 	
+	  
+	 
 	 //Sample and save data to file for subsequent analysis:
 	 
-	 //Open file for data:
-	 if( (fp=fopen(filename,"wt")) == NULL)
-	 {
-		printf("Error opening file -aboritng program!\n");
-		exit(0);	 
-	 }
+	 struct timeval tv_start,tv_end;
+	 uint64_t time_diff;
 	 
+	 
+	 //Open file for data:
+	 if(saveToFile)
+	 {
+		 if( (fp=fopen(filename,"wt")) == NULL)
+		 {
+			printf("Error opening file -aborting program!\n");
+			exit(0);	 
+		 }
+    }
+ 
 	 uint cnt = 0;
-	 uint max_cnt = 1000;
+	 uint64_t max_cnt = 1000;
 	 //while(EXIT_PROGRAM == 0)
-	 for(int i=0; i<1000;i++)
+	 gettimeofday(&tv_start,NULL);
+	 for(int i=0; i<max_cnt;i++)
 	 {             
 		  data[i] = readSample();
-		  //printf("Count: %d\n", cnt);
-		  //printf("Voltage reading: %.2f\n",volts);
-		  //fprintf(fp,"%d%c%.2f\n",cnt,',',volts);
-		  //fprintf(fp,"%.2f\n",volts);
 		  
-		  bcm2835_delayMicroseconds(sample_delay);   
-		  //cnt += 1;      
+		  //bcm2835_delayMicroseconds(sample_delay);   
+		       
 					 
 	 } 
-						  
+	 gettimeofday(&tv_end,NULL);	
+	  
+	 
+	 time_diff = (tv_end.tv_sec*(uint64_t)1000000 + (uint64_t)tv_end.tv_usec)
+	           - (tv_start.tv_sec*(uint64_t)1000000 + (uint64_t)tv_start.tv_usec);
+	 printf("Time difference for loop (us):  %llu\n",time_diff);
+	 printf("Max count: %llu\n",max_cnt);
+	 printf("Time difference per sample (us):  %llu\n",time_diff/max_cnt);
+	 printf("Effective sampling rate:  %f\n",1.0/( ((float)time_diff/(float)max_cnt))*1000000 ) ;
+	           				  
 		
+	 
 	 //Save sampled data to file:
-	 for(int i=0;i<1000;i++)
+	 if(saveToFile)
 	 {
-		 fprintf(fp,"%.2f\n",data[i]);
-	 } 
-	 	 
-	 //Close file:
-	 fclose(fp);
-	 printf("Data file closed\n");
+		 for(int i=0;i<1000;i++)
+		 {
+			 fprintf(fp,"%.2f\n",data[i]);
+		 } 
+		 //Close file:
+		 fclose(fp);
+		 printf("Data file closed\n");
+    }
 	 
 	 printf("Closing down SPI interface...\n");
 	 MCP3008_Close();
@@ -290,7 +319,7 @@ void doTest()
 	 
 	 printf("Exiting program\n");              
 	 exit(0);					
-	 
+    
 		
 }//doTest	
 

@@ -2,17 +2,15 @@
 #define GRAPH_H
 
 /*
- ============================================================================
+ =======================================================================
  Name        : graph.c
  Author      : Michael McGetrick
  Version     :
  Copyright   : 
- Description : Graph module to set up graph and animamation plotting 
- 	 	 	      for signal from MCP3008
- 	 	 	         
-
- 	 	 	    #endif
- ============================================================================
+ Description : Graph module to set up graphing for animated plotting 
+ 	 	 	       	 	 	         
+ 	 	 	    
+ =======================================================================
  */
 
 #include <stdio.h>
@@ -31,15 +29,15 @@
 //USER DEFINES: ------------------------------------------------------------
 
 //Data buffer for plot
-#define DATA_LEN  		200  //This is also length of x axis on plot
+#define DATA_LEN  		100 //1000 //This is also length of x axis on plot
 #define REFRESH_MODE	0	//Plot refresh mode:   0: Per new sample; 1: Data buffer complete
-#define SAMPLE_RATE     1000 //50  //(samples per second): Known rate from MCU (could use a header from MCU to dynamically define this)
-#define REFRESH_CNT     0.5*SAMPLE_RATE   //Count at which to refresh graph
+#define SAMPLE_RATE     1024 //50  //(samples per second): Known rate from MCU (could use a header from MCU to dynamically define this)
+#define REFRESH_CNT     1.5*SAMPLE_RATE   //Count at which to refresh graph
 #define GRAPH_MODE		1   //0: Simulation data; 1: Real data from Serial Port      
 #define DATA_SKIP		0//500  //Define the number of incoming data samples to ignore before string plotting 
 							//Avoids any sprious data coming through on initial startup/reset
 							
-#define DC_OFFSET		-2.25//-2.5//Define offset to match dc offset provided in MCU							
+#define DC_OFFSET		-1.65 + 0.20//-2.25//-2.5//Define offset to match dc offset provided in MCU							
 									//There appears to be 0.25 difference in expected value (could be down to resistor error toloerance)
 
 
