@@ -1,15 +1,15 @@
 /*
- ============================================================================
+ =======================================================================
  Name        : graph.c
  Author      : Michael McGetrick
  Version     :
  Copyright   : 
- Description : Graph module to set up graph and animamation plotting 
- 	 	 	      for signal from MCP3008
+ Description : Graph module to set up graphing for animated plotting 
+ 	 	 	      
  	 	 	         
 
  	 	 	    
- ============================================================================
+ =======================================================================
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,6 +41,7 @@ bool legend_flg = true;
 bool mSuppress = false;
 
 
+
 //GRAPH FUNCTIONS -------------------------------------------------------------
 void plotTrace(int color)
 {
@@ -49,7 +50,24 @@ void plotTrace(int color)
 	  vmin = Y_MAX;
 	  
 	  if(GRAPH_MODE == 0)   //Simulation
-      {
+     {
+		  
+		  //Allocate memory for display data:
+		  if((dataX = malloc(DATA_LEN*sizeof(float))) == NULL)
+		  {
+				printf("Problem allocationg mermory for display data\n");
+				printf("Exiting program!\n");
+				exit(1);
+		  }	
+	
+		  if((dataY = malloc(DATA_LEN*sizeof(float))) == NULL)
+		  {
+				printf("Problem allocationg mermory for display data\n");
+				printf("Exiting program!\n");
+				exit(1);
+		  }
+		  
+		  
 		  for(int i=0;i<DATA_LEN;i++)
 		  {
 				dataX[i] = i;

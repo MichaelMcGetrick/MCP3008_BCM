@@ -20,7 +20,9 @@
 #define SPI_BIT_ORDER     BCM2835_SPI_BIT_ORDER_MSBFIRST      //Bit order for MCP3008
 #define SPI_DATA_MODE     BCM2835_SPI_MODE0                   //Default data mode
 #define SPI_CS            BCM2835_SPI_CS0                     //Chip select
-#define SPI_CLK_DIV       BCM2835_SPI_CLOCK_DIVIDER_2048     //Gives clock frequency of 0.68MHz (4096 -> 0.34MHz)
+#define SPI_CLK_DIV       BCM2835_SPI_CLOCK_DIVIDER_2048     //Gives clock frequency 
+                                                              //1024 -> 1.37MHz
+                                                              //2048 -> 0.68MHz
 
 
 #define RD_MODE 	        1   //Single:1; Differential: 0
