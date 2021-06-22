@@ -31,7 +31,7 @@ float SAMPLE_RATE;
 
 //USER DEFINES: ------------------------------------------------------------
 #define SAMPLE_MODE		0			//0: bcm delay; 1: fast looping - no delay
-#define SAMPLE_RATE		200.0f   //Define required value for bsm delay usage
+#define SAMPLE_RATE		500.0f   //Define required value for bsm delay usage
 											 //Fast looping (below figures based on metric tests):
 											 //7000.0f if SPI Clock divider is BCM2835_SPI_CLOCK_DIVIDER_2048
 											 //14000.0f if SPI Clock divider is BCM2835_SPI_CLOCK_DIVIDER_1024
